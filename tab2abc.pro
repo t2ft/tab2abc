@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         tab2abc.cpp \
-    convert.cpp
+    convert.cpp \
+    elidedlabel.cpp
 
 HEADERS  += tab2abc.h \
-    convert.h
+    convert.h \
+    elidedlabel.h
 
 FORMS    += tab2abc.ui

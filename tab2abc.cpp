@@ -14,6 +14,7 @@
 
 #include "tab2abc.h"
 #include "ui_tab2abc.h"
+#include "elidedlabel.h"
 #include <QSettings>
 #include <QFileDialog>
 #include <QDir>
@@ -91,7 +92,7 @@ void Tab2Abc::on_loadOutFileName_clicked()
 }
 
 
-void Tab2Abc::setFileName(const QString &fname, QLabel *ctrl)
+void Tab2Abc::setFileName(const QString &fname, ElidedLabel *ctrl)
 {
     QString nativeFileName = QDir::toNativeSeparators(fname);
     ctrl->setText(nativeFileName);
