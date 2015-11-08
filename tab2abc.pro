@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        tab2abc.cpp
+        tab2abc.cpp \
+    convert.cpp
 
-HEADERS  += tab2abc.h
+HEADERS  += tab2abc.h \
+    convert.h
 
 FORMS    += tab2abc.ui

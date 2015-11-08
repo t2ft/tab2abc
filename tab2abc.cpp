@@ -8,7 +8,7 @@
 **
 ** Date         Author  Description
 **---------------------------------------------------------------------------
-**
+** 2015-11-08   ttha    Initial version
 **
 *****************************************************************************/
 
@@ -33,7 +33,7 @@ Tab2Abc::Tab2Abc(QWidget *parent) :
 
     // reload settings
     QSettings settings;
-    m_metrum = static_cast<Metrum>(settings.value(cfgMetrum, M4_4).toInt());
+    m_metrum = static_cast<Convert::Metrum>(settings.value(cfgMetrum, Convert::M4_4).toInt());
     m_inFileName = QDir::fromNativeSeparators(settings.value(cfgInFileName).toString());
     m_outFileName = QDir::fromNativeSeparators(settings.value(cfgOutFileName).toString());
 
@@ -41,10 +41,10 @@ Tab2Abc::Tab2Abc(QWidget *parent) :
 
     ui->inFileName->setText(QDir::toNativeSeparators(m_inFileName));
     ui->outFileName->setText(QDir::toNativeSeparators(m_outFileName));
-    ui->m2_4->setChecked(m_metrum == M2_4);
-    ui->m3_4->setChecked(m_metrum == M3_4);
-    ui->m4_4->setChecked(m_metrum == M4_4);
-    ui->m6_8->setChecked(m_metrum == M6_8);
+    ui->m2_4->setChecked(m_metrum == Convert::M2_4);
+    ui->m3_4->setChecked(m_metrum == Convert::M3_4);
+    ui->m4_4->setChecked(m_metrum == Convert::M4_4);
+    ui->m6_8->setChecked(m_metrum == Convert::M6_8);
 }
 
 Tab2Abc::~Tab2Abc()
@@ -93,32 +93,32 @@ void Tab2Abc::on_loadOutFileName_clicked()
 void Tab2Abc::on_m2_4_toggled(bool checked)
 {
     if (checked) {
-        setMetrum(M2_4);
+        setMetrum(Convert::M2_4);
     }
 }
 
 void Tab2Abc::on_m3_4_toggled(bool checked)
 {
     if (checked) {
-        setMetrum(M3_4);
+        setMetrum(Convert::M3_4);
     }
 }
 
 void Tab2Abc::on_m4_4_toggled(bool checked)
 {
     if (checked) {
-        setMetrum(M4_4);
+        setMetrum(Convert::M4_4);
     }
 }
 
 void Tab2Abc::on_m6_8_toggled(bool checked)
 {
     if (checked) {
-        setMetrum(M6_8);
+        setMetrum(Convert::M6_8);
     }
 }
 
-void Tab2Abc::setMetrum(Metrum metrum)
+void Tab2Abc::setMetrum(Convert::Metrum metrum)
 {
     if (m_metrum != metrum) {
         m_metrum = metrum;

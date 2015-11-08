@@ -12,21 +12,10 @@
 **
 *****************************************************************************/
 
-#include "tab2abc.h"
-#include <QApplication>
+#include "convert.h"
 
-int main(int argc, char *argv[])
+Convert::Convert(const QString &inFileName, const QString &outFileName, Metrum metrum, QObject *parent) : QObject(parent)
 {
-    QApplication a(argc, argv);
 
-    // set app properties
-    a.setApplicationName("tab2abc");
-    a.setApplicationVersion("1.0.0");
-    a.setOrganizationName("T2FT");
-    a.setOrganizationDomain("t2ft.de");
-
-    Tab2Abc w;
-    w.show();
-
-    return a.exec();
 }
+

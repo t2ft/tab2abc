@@ -12,21 +12,27 @@
 **
 *****************************************************************************/
 
-#include "tab2abc.h"
-#include <QApplication>
+#ifndef CONVERT_H
+#define CONVERT_H
 
-int main(int argc, char *argv[])
+#include <QObject>
+
+class Convert : public QObject
 {
-    QApplication a(argc, argv);
+    Q_OBJECT
+public:
+    typedef enum {
+        M2_4,
+        M3_4,
+        M4_4,
+        M6_8
+    } Metrum;
 
-    // set app properties
-    a.setApplicationName("tab2abc");
-    a.setApplicationVersion("1.0.0");
-    a.setOrganizationName("T2FT");
-    a.setOrganizationDomain("t2ft.de");
+    explicit Convert(const QString &inFileName, const QString &outFileName, Metrum metrum = M4_4, QObject *parent = 0);
 
-    Tab2Abc w;
-    w.show();
+signals:
 
-    return a.exec();
-}
+public slots:
+};
+
+#endif // CONVERT_H

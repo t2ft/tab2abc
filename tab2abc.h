@@ -8,14 +8,17 @@
 **
 ** Date         Author  Description
 **---------------------------------------------------------------------------
-**
+** 2015-11-08   ttha    Initial version
 **
 *****************************************************************************/
 
 #ifndef TAB2ABC_H
 #define TAB2ABC_H
 
+
+#include "convert.h"
 #include <QWidget>
+
 
 namespace Ui {
 class Tab2Abc;
@@ -26,13 +29,6 @@ class Tab2Abc : public QWidget
     Q_OBJECT
 
 public:
-
-    typedef enum {
-        M2_4,
-        M3_4,
-        M4_4,
-        M6_8
-    } Metrum;
 
     explicit Tab2Abc(QWidget *parent = 0);
     ~Tab2Abc();
@@ -51,11 +47,11 @@ private slots:
 
 private:
     Ui::Tab2Abc *ui;
-    Metrum      m_metrum;
-    QString     m_inFileName;
-    QString     m_outFileName;
+    Convert::Metrum     m_metrum;
+    QString             m_inFileName;
+    QString             m_outFileName;
 
-    void setMetrum(Metrum metrum);
+    void setMetrum(Convert::Metrum metrum);
 };
 
 #endif // TAB2ABC_H
