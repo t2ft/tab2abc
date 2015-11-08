@@ -19,6 +19,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QCloseEvent>
+#include <QScopedPointer>
 #include <QDebug>
 
 #define cfgInFileName       "InFileName"
@@ -139,18 +140,6 @@ void Tab2Abc::setMetrum(Convert::Metrum metrum)
     }
 }
 
-void Tab2Abc::on_run_clicked()
-{
-    qDebug() << "RUN";
-    ui->log->clear();
-#ifdef QT_DEBUG
-    debug("Das ist eine Debug-Meldung");
-    info("Das ist eine Information");
-    warning("Das ist eine Warnung");
-    error("Das ist eine Fehlermeldung");
-#endif
-}
-
 void Tab2Abc::debug(const QString &text)
 {
     log(text, LogDebug);
@@ -207,3 +196,16 @@ void Tab2Abc::log(const QString &msg, LogType type)
     ui->log->appendHtml(htmlString);
     ui->log->ensureCursorVisible();
 }
+
+void Tab2Abc::on_run_clicked()
+{
+    qDebug() << "RUN";
+    ui->log->clear();
+    QScopedPointer<Convert> cnv(new Convert(m_inFileName, m_outFileName, m_metrum, this));
+    connect(cnv.data(), SIGNAL(debug(QString)), SLOT(debug(QString)));
+    connect(cnv.data(), SIGNAL(info(QString)), SLOT(info(QString)));
+    connect(cnv.data(), SIGNAL(warning(QString)), SLOT(warning(QString)));
+    connect(cnv.data(), SIGNAL(error(QString)), SLOT(error(QString)));
+    cnv->exec();
+}
+
