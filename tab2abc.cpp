@@ -142,4 +142,68 @@ void Tab2Abc::setMetrum(Convert::Metrum metrum)
 void Tab2Abc::on_run_clicked()
 {
     qDebug() << "RUN";
+    ui->log->clear();
+#ifdef QT_DEBUG
+    debug("Das ist eine Debug-Meldung");
+    info("Das ist eine Information");
+    warning("Das ist eine Warnung");
+    error("Das ist eine Fehlermeldung");
+#endif
+}
+
+void Tab2Abc::debug(const QString &text)
+{
+    log(text, LogDebug);
+}
+
+void Tab2Abc::info(const QString &text)
+{
+    log(text, LogInfo);
+}
+
+void Tab2Abc::warning(const QString &text)
+{
+    log(text, LogWarning);
+}
+
+void Tab2Abc::error(const QString &text)
+{
+    log(text, LogError);
+}
+
+
+void Tab2Abc::log(const QString &msg, LogType type)
+{
+    QString typeString = "???";
+    QString textColor = "#ff0000";
+    QString backColor = "#ffffff";
+    switch (type) {
+    case LogInfo:
+        typeString = "III";
+        textColor  = "#000000";
+        break;
+    case LogWarning :
+        typeString = "WWW";
+        textColor  = "#b08000";
+        break;
+    case LogError:
+        typeString = "EEE";
+        textColor  = "#a00000";
+        break;
+    case LogDebug:
+        typeString = "DDD";
+        textColor  = "#a0a0a0";
+        break;
+    }
+    QString htmlString = QString("<p>"   \
+                                 "<span style=\"font-family:'Courier,Courier New,Lucida Console,Fixedsys,FreeMono,Monospace,Typewriter'; font-size:small; color:#808080;background-color:%4\">"  \
+                                     "%1:"   \
+                                 "</span>"   \
+                                 "&nbsp;"    \
+                                 "<span style=\"color:%3;background-color:%4\">" \
+                                     "%2"    \
+                                 "</span>"    \
+                             "</p>").arg(typeString).arg(msg).arg(textColor).arg(backColor);
+    ui->log->appendHtml(htmlString);
+    ui->log->ensureCursorVisible();
 }

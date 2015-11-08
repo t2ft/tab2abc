@@ -31,6 +31,10 @@ public:
     explicit Convert(const QString &inFileName, const QString &outFileName, Metrum metrum = M4_4, QObject *parent = 0);
 
 signals:
+    void debug(const QString &text);
+    void info(const QString &text);
+    void warning(const QString &text);
+    void error(const QString &text);
 
 public slots:
 };

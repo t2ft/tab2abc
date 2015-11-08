@@ -35,6 +35,13 @@ public:
     explicit Tab2Abc(QWidget *parent = 0);
     ~Tab2Abc();
 
+public slots:
+    void debug(const QString &text);
+    void info(const QString &text);
+    void warning(const QString &text);
+    void error(const QString &text);
+
+
 protected:
     void closeEvent(QCloseEvent *ev);
 
@@ -48,13 +55,21 @@ private slots:
     void on_m6_8_toggled(bool checked);
 
 private:
-    Ui::Tab2Abc *ui;
+    typedef enum {
+        LogDebug,
+        LogInfo,
+        LogWarning,
+        LogError
+    } LogType;
+
+    Ui::Tab2Abc         *ui;
     Convert::Metrum     m_metrum;
     QString             m_inFileName;
     QString             m_outFileName;
 
     void setMetrum(Convert::Metrum metrum);
     void setFileName(const QString &fname, ElidedLabel *ctrl);
+    void log(const QString &msg, LogType logType);
 };
 
 #endif // TAB2ABC_H
