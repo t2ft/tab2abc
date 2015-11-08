@@ -15,10 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         tab2abc.cpp \
     convert.cpp \
-    elidedlabel.cpp
+    elidedlabel.cpp \
+    bassstringline.cpp \
+    abcfile.cpp
 
 HEADERS  += tab2abc.h \
     convert.h \
-    elidedlabel.h
+    elidedlabel.h \
+    bassstringline.h \
+    abcfile.h
 
 FORMS    += tab2abc.ui

@@ -12,28 +12,23 @@
 **
 *****************************************************************************/
 
-#ifndef CONVERT_H
-#define CONVERT_H
+#ifndef ABCFILE_H
+#define ABCFILE_H
 
 #include <QObject>
 
+class QFile;
 class QTextStream;
-class AbcFile;
 
-class Convert : public QObject
+class AbcFile : public QObject
 {
     Q_OBJECT
 public:
-    typedef enum {
-        M2_4,
-        M3_4,
-        M4_4,
-        M6_8
-    } Metrum;
+    explicit AbcFile(QObject *parent = 0);
 
-    explicit Convert(const QString &inFileName, const QString &outFileName, Metrum metrum = M4_4, QObject *parent = 0);
+    ~AbcFile();
 
-    void exec(void);
+    bool open(const QString &fname);
 
 signals:
     void debug(const QString &text);
@@ -42,12 +37,8 @@ signals:
     void error(const QString &text);
 
 private:
-    QString     m_inFileName;
-    QString     m_outFileName;
-    Metrum      m_metrum;
-    QString     m_notes;
-
-    bool convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning);
+    QFile           *m_file;
+    QTextStream     *m_ts;
 };
 
-#endif // CONVERT_H
+#endif // ABCFILE_H

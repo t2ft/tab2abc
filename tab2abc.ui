@@ -121,7 +121,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="log"/>
+    <widget class="QPlainTextEdit" name="log">
+     <property name="lineWrapMode">
+      <enum>QPlainTextEdit::NoWrap</enum>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
