@@ -39,8 +39,8 @@ Tab2Abc::Tab2Abc(QWidget *parent) :
 
     restoreGeometry(settings.value(cfgWindowGeometry).toByteArray());
 
-    ui->inFileName->setText(QDir::toNativeSeparators(m_inFileName));
-    ui->outFileName->setText(QDir::toNativeSeparators(m_outFileName));
+    setFileName(m_inFileName, ui->inFileName);
+    setFileName(m_outFileName, ui->outFileName);
     ui->m2_4->setChecked(m_metrum == Convert::M2_4);
     ui->m3_4->setChecked(m_metrum == Convert::M3_4);
     ui->m4_4->setChecked(m_metrum == Convert::M4_4);
@@ -70,7 +70,7 @@ void Tab2Abc::on_loadInFileName_clicked()
                                                  QFileDialog::ReadOnly);
     if (!fname.isEmpty()) {
         m_inFileName = QDir::fromNativeSeparators(fname);
-        ui->inFileName->setText(QDir::toNativeSeparators(m_inFileName));
+        setFileName(m_inFileName, ui->inFileName);
         QSettings settings;
         settings.setValue(cfgInFileName, m_inFileName);
     }
@@ -84,11 +84,20 @@ void Tab2Abc::on_loadOutFileName_clicked()
                                                  tr("ABC Dateien (*.abc);;alle Dateien (*.*)"));
     if (!fname.isEmpty()) {
         m_outFileName = QDir::fromNativeSeparators(fname);
-        ui->outFileName->setText(QDir::toNativeSeparators(m_outFileName));
+        setFileName(m_outFileName, ui->outFileName);
         QSettings settings;
         settings.setValue(cfgOutFileName, m_outFileName);
     }
 }
+
+
+void Tab2Abc::setFileName(const QString &fname, QLabel *ctrl)
+{
+    QString nativeFileName = QDir::toNativeSeparators(fname);
+    ctrl->setText(nativeFileName);
+    ctrl->setToolTip(nativeFileName);
+}
+
 
 void Tab2Abc::on_m2_4_toggled(bool checked)
 {
@@ -97,12 +106,14 @@ void Tab2Abc::on_m2_4_toggled(bool checked)
     }
 }
 
+
 void Tab2Abc::on_m3_4_toggled(bool checked)
 {
     if (checked) {
         setMetrum(Convert::M3_4);
     }
 }
+
 
 void Tab2Abc::on_m4_4_toggled(bool checked)
 {

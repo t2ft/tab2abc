@@ -24,6 +24,8 @@ namespace Ui {
 class Tab2Abc;
 }
 
+class QLabel;
+
 class Tab2Abc : public QWidget
 {
     Q_OBJECT
@@ -52,6 +54,7 @@ private:
     QString             m_outFileName;
 
     void setMetrum(Convert::Metrum metrum);
+    void setFileName(const QString &fname, QLabel *ctrl);
 };
 
 #endif // TAB2ABC_H
