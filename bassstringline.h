@@ -21,9 +21,10 @@ class BassStringLine : public QObject
 {
     Q_OBJECT
 public:
-    explicit BassStringLine(const QString &line, char defaultTuning, int lineNumber, int stringNumber, QObject *parent = 0);
+    explicit BassStringLine(char defaulTuning, int lineNumber, int stringNumber, QObject *parent = 0);
 
     static bool isBassStringLine(const QString &line);
+    bool convert(const QString &line);
 
     int barCount() const;
     int tickCount(int bar) const;
@@ -35,17 +36,17 @@ signals:
     void info(const QString &text);
     void warning(const QString &text);
     void error(const QString &text);
+    void success(const QString &text);
 
 private:
-    QString                 m_line;
     char                    m_tuning;
     int                     m_lineNumber;
     int                     m_stringNumber;
-    int                     m_bars;
-    QList<int>              m_ticks;
+    int                     m_tuningBase;
     QList<QStringList>      m_notes;
 
     QString calcNote(const QString &fretString) const;
+    int note2index(char note);
 };
 
 #endif // BASSSTRINGLINE_H

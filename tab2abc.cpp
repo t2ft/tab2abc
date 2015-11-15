@@ -21,6 +21,8 @@
 #include <QCloseEvent>
 #include <QScopedPointer>
 #include <QDebug>
+#include <QScrollBar>
+
 
 #define cfgInFileName       "InFileName"
 #define cfgOutFileName      "OutFileName"
@@ -160,6 +162,10 @@ void Tab2Abc::error(const QString &text)
     log(text, LogError);
 }
 
+void Tab2Abc::success(const QString &text)
+{
+    log(text, LogSuccess);
+}
 
 void Tab2Abc::log(const QString &msg, LogType type)
 {
@@ -183,6 +189,10 @@ void Tab2Abc::log(const QString &msg, LogType type)
         typeString = "DDD";
         textColor  = "#a0a0a0";
         break;
+    case LogSuccess:
+        typeString = "&nbsp;&nbsp;&nbsp;";
+        textColor  = "#00a000";
+        break;
     }
     QString htmlString = QString("<p>"   \
                                  "<span style=\"font-family:'Courier,Courier New,Lucida Console,Fixedsys,FreeMono,Monospace,Typewriter'; font-size:small; color:#808080;background-color:%4\">"  \
@@ -195,6 +205,8 @@ void Tab2Abc::log(const QString &msg, LogType type)
                              "</p>").arg(typeString).arg(msg).arg(textColor).arg(backColor);
     ui->log->appendHtml(htmlString);
     ui->log->ensureCursorVisible();
+    QScrollBar *hScroll = ui->log->horizontalScrollBar();
+    hScroll->setValue(hScroll->minimum());
 }
 
 void Tab2Abc::on_run_clicked()
@@ -206,6 +218,7 @@ void Tab2Abc::on_run_clicked()
     connect(cnv.data(), SIGNAL(info(QString)), SLOT(info(QString)));
     connect(cnv.data(), SIGNAL(warning(QString)), SLOT(warning(QString)));
     connect(cnv.data(), SIGNAL(error(QString)), SLOT(error(QString)));
+    connect(cnv.data(), SIGNAL(success(QString)), SLOT(success(QString)));
     cnv->exec();
 }
 

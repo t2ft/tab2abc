@@ -40,6 +40,7 @@ public slots:
     void info(const QString &text);
     void warning(const QString &text);
     void error(const QString &text);
+    void success(const QString &text);
 
 
 protected:
@@ -59,7 +60,8 @@ private:
         LogDebug,
         LogInfo,
         LogWarning,
-        LogError
+        LogError,
+        LogSuccess
     } LogType;
 
     Ui::Tab2Abc         *ui;
