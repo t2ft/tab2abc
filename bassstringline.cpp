@@ -196,10 +196,15 @@ int BassStringLine::note2index(char note)
 QString BassStringLine::calcNote(const QString &fretString) const
 {
     QString ret;
+    QString extra;
     if (fretString!="-") {
         int fret = fretString.toInt();
+        if (fret < 0) {
+            fret = -fret;
+            extra = '.';
+        }
         int noteIndex = qBound(0, m_tuningBase+fret, NUM_NOTES-1);
-        ret += QString(note_names[noteIndex]);
+        ret += extra + QString(note_names[noteIndex]);
     } else {
         ret = "-";
     }
