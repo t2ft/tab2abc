@@ -92,7 +92,7 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                 }
                 emit info(msg);
                 foreach (BassStringLine *bsl, bassStringLines) {
-                    emit extrainfo(bsl->line());
+                    emit extrainfo(bsl->rawLine());
                 }
                 // sanity check: Number of bars has to be identical on each string
                 int bars = bassStringLines.first()->barCount();
@@ -107,6 +107,7 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                     }
                 }
                 // convert each bar
+                QString notes;
                 for (int b=0; b<bars; b++) {
                     // sanity check: Number of ticks has to be identical on each string
                     int ticks = bassStringLines.first()->tickCount(b);
@@ -139,9 +140,9 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                             if (lastNote.isEmpty()) {
                                 // pause
                                 if (duration > 0)
-                                    m_notes += QString("z%1").arg(duration);
+                                    notes += QString("z%1").arg(duration);
                             } else {
-                                m_notes += QString("%1%2").arg(lastNote).arg(duration);
+                                notes += QString("%1%2").arg(lastNote).arg(duration);
                             }
                             lastNote = note;
                             duration = 1;
@@ -151,20 +152,21 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                     if (lastNote.isEmpty()) {
                         // pause
                         if (duration > 0)
-                            m_notes += QString("z%1").arg(duration);
+                            notes += QString("z%1").arg(duration);
                     } else {
-                        m_notes += QString("%1%2").arg(lastNote).arg(duration);
+                        notes += QString("%1%2").arg(lastNote).arg(duration);
                     }
                     // finish bar
-                    m_notes += '|';
+                    notes += '|';
                 }
                 // update tuning defaults
                 tuning.clear();
                 foreach (BassStringLine *bsl, bassStringLines) {
                     tuning += bsl->tuning();
                 }
-                emit extrainfo(m_notes);
+                emit extrainfo(notes);
                 emit success(tr("Tab #%1 erfolgreich konvertiert.").arg(lineNumber+1));
+                m_notes += notes;
                 // done, clean up
                 qDeleteAll(bassStringLines);
                 return true;

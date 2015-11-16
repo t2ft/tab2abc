@@ -206,7 +206,22 @@ QString BassStringLine::calcNote(const QString &fretString) const
     return ret;
 }
 
-const QString &BassStringLine::line() const
+const QString &BassStringLine::rawLine() const
 {
     return m_line;
+}
+
+QString BassStringLine::notes(int bar) const
+{
+    return m_notes.value(bar).join(' ');
+}
+
+QString BassStringLine::notes() const
+{
+    QString ret = "| ";
+    int bars = barCount();
+    for (int b=0; b<bars; b++) {
+        ret += notes(b) + " | ";
+    }
+    return ret;
 }

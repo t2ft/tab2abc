@@ -30,7 +30,9 @@ public:
     int tickCount(int bar) const;
     QChar tuning() const;
     QString note(int bar, int tick) const;
-    const QString &line() const;
+    QString notes(int bar) const;
+    QString notes() const;
+    const QString &rawLine() const;
 
 signals:
     void debug(const QString &text);
