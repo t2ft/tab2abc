@@ -15,7 +15,7 @@
 #include "bassstringline.h"
 
 #include <QRegExp>
-
+#include <QStringList>
 
 BassStringLine::BassStringLine(char defaulTuning, int lineNumber, int stringNumber, QObject *parent)
     : QObject(parent)
