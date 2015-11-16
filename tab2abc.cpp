@@ -22,7 +22,7 @@
 #include <QScopedPointer>
 #include <QDebug>
 #include <QScrollBar>
-
+#include <QFileInfo>
 
 #define cfgInFileName       "InFileName"
 #define cfgOutFileName      "OutFileName"
@@ -82,9 +82,11 @@ void Tab2Abc::on_loadInFileName_clicked()
 
 void Tab2Abc::on_loadOutFileName_clicked()
 {
+    QFileInfo fi(m_inFileName);
+    QString defaultOutFileName = fi.canonicalPath() + '/' + fi.completeBaseName() + ".abc";
     QString fname = QFileDialog::getSaveFileName(this,
                                                  qApp->applicationName() + tr(" - Ausgabedatei"),
-                                                 QDir::toNativeSeparators(m_inFileName),
+                                                 QDir::toNativeSeparators(defaultOutFileName),
                                                  tr("ABC Dateien (*.abc);;alle Dateien (*.*)"));
     if (!fname.isEmpty()) {
         m_outFileName = QDir::fromNativeSeparators(fname);
@@ -213,12 +215,22 @@ void Tab2Abc::on_run_clicked()
 {
     qDebug() << "RUN";
     ui->log->clear();
-    QScopedPointer<Convert> cnv(new Convert(m_inFileName, m_outFileName, m_metrum, this));
-    connect(cnv.data(), SIGNAL(debug(QString)), SLOT(debug(QString)));
-    connect(cnv.data(), SIGNAL(info(QString)), SLOT(info(QString)));
-    connect(cnv.data(), SIGNAL(warning(QString)), SLOT(warning(QString)));
-    connect(cnv.data(), SIGNAL(error(QString)), SLOT(error(QString)));
-    connect(cnv.data(), SIGNAL(success(QString)), SLOT(success(QString)));
-    cnv->exec();
+    if (m_inFileName.isEmpty()) {
+        on_loadInFileName_clicked();
+    }
+    if (!m_inFileName.isEmpty()) {
+        if (m_outFileName.isEmpty()) {
+            on_loadOutFileName_clicked();
+        }
+        if (!m_outFileName.isEmpty()) {
+            QScopedPointer<Convert> cnv(new Convert(m_inFileName, m_outFileName, m_metrum, this));
+            connect(cnv.data(), SIGNAL(debug(QString)), SLOT(debug(QString)));
+            connect(cnv.data(), SIGNAL(info(QString)), SLOT(info(QString)));
+            connect(cnv.data(), SIGNAL(warning(QString)), SLOT(warning(QString)));
+            connect(cnv.data(), SIGNAL(error(QString)), SLOT(error(QString)));
+            connect(cnv.data(), SIGNAL(success(QString)), SLOT(success(QString)));
+            cnv->exec();
+        }
+    }
 }
 
