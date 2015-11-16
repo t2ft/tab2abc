@@ -38,6 +38,7 @@ public:
 signals:
     void debug(const QString &text);
     void info(const QString &text);
+    void extrainfo(const QString &text);
     void warning(const QString &text);
     void error(const QString &text);
     void success(const QString &text);

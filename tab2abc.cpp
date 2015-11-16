@@ -154,6 +154,11 @@ void Tab2Abc::info(const QString &text)
     log(text, LogInfo);
 }
 
+void Tab2Abc::extrainfo(const QString &text)
+{
+    log(text, LogExtraInfo);
+}
+
 void Tab2Abc::warning(const QString &text)
 {
     log(text, LogWarning);
@@ -171,13 +176,21 @@ void Tab2Abc::success(const QString &text)
 
 void Tab2Abc::log(const QString &msg, LogType type)
 {
+    static const char *FIXED_PITCH_FONTS = "Courier,Courier New,Lucida Console,Fixedsys,FreeMono,Monospace,Typewriter";
+    static const char *VARIABLE_PITCH_FONTS = "Arial, Helvetica, Verdana";
     QString typeString = "???";
     QString textColor = "#ff0000";
     QString backColor = "#ffffff";
+    bool fixedpitch = false;
     switch (type) {
     case LogInfo:
         typeString = "III";
         textColor  = "#000000";
+        break;
+    case LogExtraInfo:
+        typeString = "&nbsp;&nbsp;&nbsp;";
+        textColor  = "#a0a0a0";
+        fixedpitch = true;
         break;
     case LogWarning :
         typeString = "WWW";
@@ -189,7 +202,7 @@ void Tab2Abc::log(const QString &msg, LogType type)
         break;
     case LogDebug:
         typeString = "DDD";
-        textColor  = "#a0a0a0";
+        textColor  = "#9090a0";
         break;
     case LogSuccess:
         typeString = "&nbsp;&nbsp;&nbsp;";
@@ -197,14 +210,15 @@ void Tab2Abc::log(const QString &msg, LogType type)
         break;
     }
     QString htmlString = QString("<p>"   \
-                                 "<span style=\"font-family:'Courier,Courier New,Lucida Console,Fixedsys,FreeMono,Monospace,Typewriter'; font-size:small; color:#808080;background-color:%4\">"  \
+                                 "<span style=\"font-family:'%5'; font-size:small; color:#808080;background-color:%4\">"  \
                                      "%1:"   \
                                  "</span>"   \
                                  "&nbsp;"    \
-                                 "<span style=\"color:%3;background-color:%4\">" \
+                                 "<span style=\"font-family:'%6'; color:%3;background-color:%4\">" \
                                      "%2"    \
                                  "</span>"    \
-                             "</p>").arg(typeString).arg(msg).arg(textColor).arg(backColor);
+                             "</p>").arg(typeString).arg(msg).arg(textColor).arg(backColor)
+                                    .arg(FIXED_PITCH_FONTS).arg(fixedpitch ? FIXED_PITCH_FONTS : VARIABLE_PITCH_FONTS);
     ui->log->appendHtml(htmlString);
     ui->log->ensureCursorVisible();
     QScrollBar *hScroll = ui->log->horizontalScrollBar();
@@ -226,6 +240,7 @@ void Tab2Abc::on_run_clicked()
             QScopedPointer<Convert> cnv(new Convert(m_inFileName, m_outFileName, m_metrum, this));
             connect(cnv.data(), SIGNAL(debug(QString)), SLOT(debug(QString)));
             connect(cnv.data(), SIGNAL(info(QString)), SLOT(info(QString)));
+            connect(cnv.data(), SIGNAL(extrainfo(QString)), SLOT(extrainfo(QString)));
             connect(cnv.data(), SIGNAL(warning(QString)), SLOT(warning(QString)));
             connect(cnv.data(), SIGNAL(error(QString)), SLOT(error(QString)));
             connect(cnv.data(), SIGNAL(success(QString)), SLOT(success(QString)));

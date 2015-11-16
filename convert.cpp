@@ -75,6 +75,7 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
             bassStringLines.append(bsl);
             connect(bsl, SIGNAL(debug(QString)), SIGNAL(debug(QString)));
             connect(bsl, SIGNAL(info(QString)), SIGNAL(info(QString)));
+            connect(bsl, SIGNAL(extrainfo(QString)), SIGNAL(extrainfo(QString)));
             connect(bsl, SIGNAL(success(QString)), SIGNAL(success(QString)));
             connect(bsl, SIGNAL(warning(QString)), SIGNAL(warning(QString)));
             connect(bsl, SIGNAL(error(QString)), SIGNAL(error(QString)));
@@ -90,6 +91,9 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                         msg += '-';
                 }
                 emit info(msg);
+                foreach (BassStringLine *bsl, bassStringLines) {
+                    emit extrainfo(bsl->line());
+                }
                 // sanity check: Number of bars has to be identical on each string
                 int bars = bassStringLines.first()->barCount();
                 foreach (BassStringLine *bsl, bassStringLines) {
@@ -159,6 +163,7 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                 foreach (BassStringLine *bsl, bassStringLines) {
                     tuning += bsl->tuning();
                 }
+                emit extrainfo(m_notes);
                 emit success(tr("Tab #%1 erfolgreich konvertiert.").arg(lineNumber+1));
                 // done, clean up
                 qDeleteAll(bassStringLines);

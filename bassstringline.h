@@ -30,15 +30,18 @@ public:
     int tickCount(int bar) const;
     QChar tuning() const;
     QString note(int bar, int tick) const;
+    const QString &line() const;
 
 signals:
     void debug(const QString &text);
     void info(const QString &text);
+    void extrainfo(const QString &text);
     void warning(const QString &text);
     void error(const QString &text);
     void success(const QString &text);
 
 private:
+    QString                 m_line;
     char                    m_tuning;
     int                     m_lineNumber;
     int                     m_stringNumber;

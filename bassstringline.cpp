@@ -28,6 +28,7 @@ BassStringLine::BassStringLine(char defaulTuning, int lineNumber, int stringNumb
 
 bool BassStringLine::convert(const QString &line)
 {
+    m_line = line;
     bool ret = true;
     typedef enum {
         Start,
@@ -203,4 +204,9 @@ QString BassStringLine::calcNote(const QString &fretString) const
         ret = "-";
     }
     return ret;
+}
+
+const QString &BassStringLine::line() const
+{
+    return m_line;
 }
