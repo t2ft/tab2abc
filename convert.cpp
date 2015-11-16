@@ -136,28 +136,15 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                             // no note found -> extend last duration of note or pause
                                 duration++;
                         } else {
-                            // new note found -> finish last note or pause
-                            if (lastNote.isEmpty()) {
-                                // pause
-                                if (duration > 0)
-                                    notes += QString("z%1").arg(duration);
-                            } else {
-                                notes += QString("%1%2").arg(lastNote).arg(duration);
-                            }
+                            notes += finishNote(lastNote, duration);
                             lastNote = note;
                             duration = 1;
                         }
                     }
                     // finish last note in bar
-                    if (lastNote.isEmpty()) {
-                        // pause
-                        if (duration > 0)
-                            notes += QString("z%1").arg(duration);
-                    } else {
-                        notes += QString("%1%2").arg(lastNote).arg(duration);
-                    }
+                    notes += finishNote(lastNote, duration);
                     // finish bar
-                    notes += '|';
+                    notes += " | ";
                 }
                 // update tuning defaults
                 tuning.clear();
@@ -174,4 +161,18 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
         }
     }
     return false;
+}
+
+QString Convert::finishNote(const QString &lastNote, int duration) const
+{
+    QString note;
+    // new note found -> finish last note or add a pause
+    if (lastNote.isEmpty()) {
+        // pause
+        if (duration > 0)
+            note = QString("z%1 ").arg(duration);
+    } else {
+        note = QString("%1%2 ").arg(lastNote).arg(duration);
+    }
+    return note;
 }

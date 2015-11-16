@@ -50,6 +50,7 @@ private:
     QString     m_notes;
 
     bool convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning);
+    QString finishNote(const QString &lastNote, int duration) const;
 };
 
 #endif // CONVERT_H
