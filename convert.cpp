@@ -52,6 +52,7 @@ void Convert::exec()
         fIn.close();
     } else {
         emit error(tr("Kann Eingabedatei nicht zum Lesen öffnen (%1: %2)").arg(fIn.error()).arg(fIn.errorString()));
+        result = false;
     }
 
     if (result)
