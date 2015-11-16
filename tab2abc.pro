@@ -26,3 +26,13 @@ HEADERS  += tab2abc.h \
     abcfile.h
 
 FORMS    += tab2abc.ui
+
+RESOURCES += \
+    tab2abc.qrc
+
+win32 {
+    RC_FILE = tab2abc.rc
+}
+
+OTHER_FILES += \
+    tab2abc.rc

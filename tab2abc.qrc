@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/tab2abc.png</file>
+        <file>res/tab2abc.svg</file>
+    </qresource>
+</RCC>

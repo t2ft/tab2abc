@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Tab2Abc</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="tab2abc.qrc">
+    <normaloff>:/res/tab2abc.png</normaloff>:/res/tab2abc.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
@@ -144,6 +148,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="tab2abc.qrc"/>
+ </resources>
  <connections/>
 </ui>
