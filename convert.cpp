@@ -53,6 +53,7 @@ void Convert::exec()
         result = false;
     }
 
+    emit info(tr("Dateiende erreicht."));
     if (result)
         emit success(tr("Konvertierung erfolgreich beendet."));
     else
