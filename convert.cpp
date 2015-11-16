@@ -46,9 +46,7 @@ void Convert::exec()
         int n = 0;
         QString tuning = "GDAE";
         m_notes.clear();
-        while (result) {
-            result &= convertTabLine(&ts, n++, tuning);
-        }
+        while (convertTabLine(&ts, n++, tuning, &result));
         fIn.close();
     } else {
         emit error(tr("Kann Eingabedatei nicht zum Lesen öffnen (%1: %2)").arg(fIn.error()).arg(fIn.errorString()));
@@ -61,10 +59,12 @@ void Convert::exec()
         emit warning(tr("Konvertierung mit Fehlern beendet."));
 }
 
-bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
+bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning, bool *result)
 {
     // read text lines, until a bass tab notation is found
     // then collect all strings and convert them
+    if (result)
+        *result = true;
     bool inTabLine = false;
     QList<BassStringLine*>  bassStringLines;
     while (!fIn->atEnd()) {
@@ -83,6 +83,8 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
             bsl->convert(line);
         } else {
             if (inTabLine) {
+                if (result)
+                    *result = false;
                 // last line found -> start conversion
                 QString msg = tr("Tab #%1 eingelesen, %2 Saiten: ").arg(lineNumber+1).arg(bassStringLines.count());
                 for (int i=bassStringLines.count(); i>0; i--) {
@@ -102,6 +104,8 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                                    .arg(bsl->tuning())
                                    .arg(bsl->barCount())
                                    .arg(bars));
+                        emit extrainfo(tr("%1-Saite: ").arg(bassStringLines.first()->tuning()) + bassStringLines.first()->notes());
+                        emit extrainfo(tr("%1-Saite: ").arg(bsl->tuning()) + bsl->notes());
                         qDeleteAll(bassStringLines);
                         return false;
                     }
@@ -119,6 +123,8 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                                        .arg(bsl->tickCount(b))
                                        .arg(ticks)
                                        .arg(bassStringLines.first()->tuning()));
+                            emit extrainfo(tr("%1-Saite: ").arg(bassStringLines.first()->tuning()) + bassStringLines.first()->notes(b));
+                            emit extrainfo(tr("%1-Saite: ").arg(bsl->tuning()) + bsl->notes(b));
                             qDeleteAll(bassStringLines);
                             return false;
                         }
@@ -156,6 +162,8 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning)
                 m_notes += notes;
                 // done, clean up
                 qDeleteAll(bassStringLines);
+                if (result)
+                    *result = true;
                 return true;
             }
         }

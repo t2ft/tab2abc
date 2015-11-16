@@ -49,7 +49,7 @@ private:
     Metrum      m_metrum;
     QString     m_notes;
 
-    bool convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning);
+    bool convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning, bool *result = NULL);
     QString finishNote(const QString &lastNote, int duration) const;
 };
 
