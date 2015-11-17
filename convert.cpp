@@ -70,7 +70,7 @@ void Convert::exec(const QString &inFileName,
             emit success(tr("Konvertierung erfolgreich beendet."));
             // write result to output file
             AbcFile abc(this);
-            if (abc.create(m_notes, metrumString(metrum), m_ticks)) {
+            if (abc.create(m_notes, metrumString(metrum), m_ticks, title, subtitle, composer, tempo, key)) {
                 result = abc.save(outFileName);
             } else {
                 result = false;

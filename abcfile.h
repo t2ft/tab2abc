@@ -36,7 +36,24 @@ class AbcFile : public QObject
 public:
     explicit AbcFile(QObject *parent = 0);
 
-    bool create(const QString &notes, const QString &metrum, int ticks);
+    bool create(const QString &notes,
+                const QString &metrum,
+                int ticks,
+                const QString &title,
+                const QStringList &subTitle,
+                const QStringList &composer,
+                const QString &tempo,
+                const QString &key);
+
+    bool create(const QString &notes,
+                const QString &metrum,
+                int ticks,
+                const QString &title,
+                const QString &subTitle,
+                const QString &composer,
+                const QString &tempo,
+                const QString &key);
+
     bool save(const QString &filePath);
 
 signals:

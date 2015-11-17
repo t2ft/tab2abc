@@ -34,13 +34,52 @@ AbcFile::AbcFile(QObject *parent) : QObject(parent)
 
 }
 
-bool AbcFile::create(const QString &notes, const QString &metrum, int ticks)
+bool AbcFile::create(const QString &notes,
+                     const QString &metrum,
+                     int ticks,
+                     const QString &title,
+                     const QString &subTitle,
+                     const QString &composer,
+                     const QString &tempo,
+                     const QString &key)
+{
+    return create(notes,
+                  metrum,
+                  ticks,
+                  title,
+                  QStringList(subTitle),
+                  QStringList(composer),
+                  tempo,
+                  key);
+}
+
+bool AbcFile::create(const QString &notes,
+                     const QString &metrum,
+                     int ticks,
+                     const QString &title,
+                     const QStringList &subTitle,
+                     const QStringList &composer,
+                     const QString &tempo,
+                     const QString &key)
 {
     m_content.clear();
+    // create header
     m_content.append("X:1");
     m_content.append(QString("L:1/%1").arg(ticks));
+    if (!title.isEmpty()) {
+        m_content.append("T:" +title);
+        foreach (QString sub, subTitle) {
+            m_content.append("T:" +sub);
+        }
+    }
+    foreach (QString c, composer) {
+        m_content.append("C:" + c);
+    }
     m_content.append(("M:" + metrum));
-    m_content.append("K:C bass");
+    if (!tempo.isEmpty())
+        m_content.append("Q:" + tempo);
+    m_content.append("K:" + (key.isEmpty() ? "C bass" : key));
+    // create body
     QStringList noteList = notes.split(' ', QString::SkipEmptyParts);
     int bars = 0;
     QString line;

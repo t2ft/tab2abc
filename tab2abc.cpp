@@ -280,7 +280,12 @@ void Tab2Abc::on_run_clicked()
             connect(cnv.data(), SIGNAL(success(QString)), SLOT(success(QString)));
             cnv->exec(m_inFileName,
                       m_outFileName,
-                      m_metrum);
+                      m_metrum,
+                      m_title,
+                      m_subTitle,
+                      m_composer,
+                      m_tempo,
+                      m_key);
         }
     }
 }
