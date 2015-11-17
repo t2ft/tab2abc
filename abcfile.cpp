@@ -83,6 +83,9 @@ bool AbcFile::create(const QString &notes,
     if (!tempo.isEmpty())
         m_content.append("Q:" + tempo);
     m_content.append("K:" + (key.isEmpty() ? "C bass" : key));
+    m_content.append("U: h = !thumb!");
+    m_content.append("U: p = !snap!");
+);
     // create body
     QStringList noteList = notes.split(' ', QString::SkipEmptyParts);
     int bars = 0;
@@ -101,7 +104,7 @@ bool AbcFile::create(const QString &notes,
         } else {
             if (note.contains('h', Qt::CaseSensitive)) {
                 // hammered note, try to symbolize it by a "thumb" symbol
-                line += "!thumb!";
+                line += "h";
                 note.remove(QChar('h'), Qt::CaseSensitive);
             }
             if (note.contains('.')) {
@@ -110,7 +113,7 @@ bool AbcFile::create(const QString &notes,
             }
             if (note.contains('p', Qt::CaseSensitive)) {
                 // pulled note, try to symbolize it by a "snap" symbol
-                line += "!snap!";
+                line += "p";
                 note.remove(QChar('p'), Qt::CaseSensitive);
             }
             if (note.contains('/')) {
