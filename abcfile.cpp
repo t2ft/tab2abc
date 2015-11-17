@@ -93,7 +93,7 @@ bool AbcFile::create(const QString &notes,
     int slur = 0;
     foreach (QString note, noteList) {
         if ((note.contains('|'))) {
-            line += " | ";
+            line += "| ";
             // new bar
             bars++;
             if (bars > 8) {
