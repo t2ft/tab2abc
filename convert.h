@@ -46,6 +46,7 @@ public:
     explicit Convert(const QString &inFileName, const QString &outFileName, Metrum metrum = M4_4, QObject *parent = 0);
 
     void exec(void);
+    QString metrumString(Metrum metrum);
 
 signals:
     void debug(const QString &text);
@@ -60,6 +61,7 @@ private:
     QString     m_outFileName;
     Metrum      m_metrum;
     QString     m_notes;
+    int         m_ticks;
 
     bool convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning, bool *result = NULL);
     QString finishNote(const QString &lastNote, int duration) const;

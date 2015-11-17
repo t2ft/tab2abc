@@ -20,44 +20,130 @@
 **
 ** Date         Author  Description
 **---------------------------------------------------------------------------
-** 2015-11-08   ttha    Initial version
+** 2015-11-17  ttha      Initial version
 **
 *****************************************************************************/
 
 #include "abcfile.h"
-
 #include <QFile>
-#include <QDir>
 #include <QTextStream>
+#include <QDebug>
 
-AbcFile::AbcFile(QObject *parent)
-    : QObject(parent)
-    , m_file(NULL)
-    , m_ts(NULL)
+AbcFile::AbcFile(QObject *parent) : QObject(parent)
 {
 
 }
 
-AbcFile::~AbcFile()
+bool AbcFile::create(const QString &notes, const QString &metrum, int ticks)
 {
-    if (m_ts) {
-        delete m_ts;
+    m_content.clear();
+    m_content.append("X:1");
+    m_content.append(QString("L:1/%1").arg(ticks));
+    m_content.append(("M:" + metrum));
+    m_content.append("K:C bass");
+    QStringList noteList = notes.split(' ', QString::SkipEmptyParts);
+    int bars = 0;
+    QString line;
+    int slur = 0;
+    foreach (QString note, noteList) {
+        if ((note.contains('|'))) {
+            line += " | ";
+            // new bar
+            bars++;
+            if (bars > 8) {
+                bars = 0;
+                m_content.append(line);
+                line.clear();
+            }
+        } else {
+            if (note.contains('h', Qt::CaseSensitive)) {
+                // hammered note, try to symbolize it by a "thumb" symbol
+                line += "!thumb!";
+                note.remove(QChar('h'), Qt::CaseSensitive);
+            }
+            if (note.contains('.')) {
+                // just ignore dots at the moment
+                note.remove(('.'));
+            }
+            if (note.contains('p', Qt::CaseSensitive)) {
+                // pulled note, try to symbolize it by a "snap" symbol
+                line += "!snap!";
+                note.remove(QChar('p'), Qt::CaseSensitive);
+            }
+            if (note.contains('/')) {
+                // slide up, symbolize by a dotted slur
+                line += ".(";
+                note.remove('/');
+                slur = 2;
+            }
+            if (note.contains('\\')) {
+                // slide down, symbolize by a dotted slur
+                line += ".(";
+                note.remove('\\');
+                slur = 2;
+            }
+            if (note.contains('~')) {
+                // bended note
+                line += "~";
+                note.remove('~');
+            }
+            if (note.contains('x')) {
+                // ghosted note
+                line += "!invisible!";
+                note.remove(QChar('x'), Qt::CaseSensitive);
+            }
+            // split notes if required, to avoid "too much dotted note" errors in abcm2ps
+            int durationIndex = note.indexOf(QRegExp("[0-9]"));
+            int duration = note.mid(durationIndex).toInt();
+            QString baseNote = note.left(durationIndex);
+            note.clear();
+            while ((ticks>2) && (duration % (ticks/2))) {
+                while ((ticks>4) && (duration % (ticks/4))) {
+                    while ((ticks>8) && (duration % (ticks/8))) {
+                        note = baseNote+"1" + (note.isEmpty() ? "" : "-") + note;
+                        duration--;
+                    }
+                    if (duration % (ticks/4)) {
+                        note = baseNote+"2" + (note.isEmpty() ? "" : "-") + note;
+                        duration -= 2;
+                    } else break;
+                }
+                if (duration % (ticks/2)) {
+                    note = baseNote+"4" + (note.isEmpty() ? "" : "-") + note;
+                    duration -= 4;
+                } else break;
+            }
+            if (duration > 0) {
+                note = QString("%1%2").arg(baseNote).arg(duration) + (note.isEmpty() ? "" : "-") + note;
+            }
+            line += note + " ";
+            if (slur > 0) {
+                slur--;
+                if (slur==0) {
+                    line += ")";
+                }
+            }
+        }
     }
-    if (m_file) {
-        m_file->close();
-        delete m_file;
-    }
+    return true;
 }
 
-
-
-bool AbcFile::open(const QString &fname)
+bool AbcFile::save(const QString &filePath)
 {
-    if (m_file) {
-        delete m_file;
-        m_file = NULL;
+    bool result = false;
+    QFile fOut(filePath);
+    if (fOut.open(QFile::WriteOnly | QFile::Text)) {
+        emit info(tr("Ausgabedatei erfolgreich zum Schreiben geöffnet."));
+        QTextStream ts(&fOut);
+        foreach (QString line, m_content) {
+            ts << line << endl;
+        }
+        fOut.close();
+        emit success(tr("Ausgabedatei erfolgreich geschrieben."));
+        result = true;
+    } else {
+        emit error(tr("Kann Ausgabedatei nicht zum Schreiben öffnen (%1: %2)")
+                   .arg(fOut.error()).arg(fOut.errorString()));
     }
-    m_file = new QFile(fname);
-    return m_file->open(QFile::ReadWrite);
+    return result;
 }
-

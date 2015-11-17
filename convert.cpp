@@ -38,6 +38,7 @@ Convert::Convert(const QString &inFileName, const QString &outFileName, Metrum m
     , m_inFileName(inFileName)
     , m_outFileName(outFileName)
     , m_metrum(metrum)
+    , m_ticks(0)
 {
 
 }
@@ -64,13 +65,11 @@ void Convert::exec()
         if (result) {
             emit success(tr("Konvertierung erfolgreich beendet."));
             // write result to output file
-            QFile fOut(m_outFileName);
-            if (fOut.open(QFile::WriteOnly | QFile::Text)) {
-                emit info(tr("Ausgabedatei erfolgreich zum Schreiben geöffnet."));
-                QTextStream ts(&fOut);
-                ts << m_notes;
-                fOut.close();
-                emit success(tr("Ausgabedatei erfolgreich geschrieben."));
+            AbcFile abc(this);
+            if (abc.create(m_notes, metrumString(m_metrum), m_ticks)) {
+                result = abc.save(m_outFileName);
+            } else {
+                result = false;
             }
         } else {
             emit warning(tr("Konvertierung mit Fehlern beendet."));
@@ -136,15 +135,17 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning, 
                 // convert each bar
                 QString notes;
                 for (int b=0; b<bars; b++) {
-                    // sanity check: Number of ticks has to be identical on each string
-                    int ticks = bassStringLines.first()->tickCount(b);
+                    // sanity check: Number of ticks has to be identical on each string and each tab line
+                    if (m_ticks==0) {
+                        m_ticks = bassStringLines.first()->tickCount(b);
+                    }
                     foreach (BassStringLine *bsl, bassStringLines) {
-                        if (bsl->tickCount(b) != ticks) {
-                            emit error(tr("    Anzahl Ticks der %1-Saite (%3) in Takt %2 unterscheidet sich von denen der %5-Saite (%4)")
+                        if (bsl->tickCount(b) != m_ticks) {
+                            emit error(tr("    Anzahl Ticks der %1-Saite (%3) in Takt %2 unterscheidet sich von denen der allerersten %5-Saite (%4)")
                                        .arg(bsl->tuning())
                                        .arg(b+1)
                                        .arg(bsl->tickCount(b))
-                                       .arg(ticks)
+                                       .arg(m_ticks)
                                        .arg(bassStringLines.first()->tuning()));
                             emit extrainfo(tr("%1-Saite: ").arg(bassStringLines.first()->tuning()) + bassStringLines.first()->notes(b));
                             emit extrainfo(tr("%1-Saite: ").arg(bsl->tuning()) + bsl->notes(b));
@@ -155,7 +156,7 @@ bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning, 
                     // convert each tick
                     int duration = 0;
                     QString lastNote;
-                    for (int t=0; t<ticks; t++) {
+                    for (int t=0; t<m_ticks; t++) {
                         QString note;
                         // search on each string for a note at this tick
                         foreach (BassStringLine *bsl, bassStringLines) {
@@ -206,4 +207,16 @@ QString Convert::finishNote(const QString &lastNote, int duration) const
         note = QString("%1%2 ").arg(lastNote).arg(duration);
     }
     return note;
+}
+
+QString Convert::metrumString(Metrum metrum)
+{
+    QString ret;
+    switch (metrum) {
+    case M2_4: ret = "2/4"; break;
+    case M3_4: ret = "3/4"; break;
+    case M6_8: ret = "6/8"; break;
+    default: ret = "4/4";
+    }
+    return ret;
 }

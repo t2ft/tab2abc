@@ -20,7 +20,7 @@
 **
 ** Date         Author  Description
 **---------------------------------------------------------------------------
-** 2015-11-08   ttha    Initial version
+** 2015-11-17  ttha      Initial version
 **
 *****************************************************************************/
 
@@ -28,9 +28,7 @@
 #define ABCFILE_H
 
 #include <QObject>
-
-class QFile;
-class QTextStream;
+#include <QStringList>
 
 class AbcFile : public QObject
 {
@@ -38,19 +36,22 @@ class AbcFile : public QObject
 public:
     explicit AbcFile(QObject *parent = 0);
 
-    ~AbcFile();
-
-    bool open(const QString &fname);
+    bool create(const QString &notes, const QString &metrum, int ticks);
+    bool save(const QString &filePath);
 
 signals:
     void debug(const QString &text);
     void info(const QString &text);
+    void extrainfo(const QString &text);
     void warning(const QString &text);
     void error(const QString &text);
+    void success(const QString &text);
 
-private:
-    QFile           *m_file;
-    QTextStream     *m_ts;
+public slots:
+
+protected:
+    QStringList     m_content;
+
 };
 
 #endif // ABCFILE_H
