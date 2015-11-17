@@ -60,16 +60,26 @@ void Convert::exec()
         m_notes.clear();
         while (convertTabLine(&ts, n++, tuning, &result));
         fIn.close();
+        emit info(tr("Dateiende erreicht."));
+        if (result) {
+            emit success(tr("Konvertierung erfolgreich beendet."));
+            // write result to output file
+            QFile fOut(m_outFileName);
+            if (fOut.open(QFile::WriteOnly | QFile::Text)) {
+                emit info(tr("Ausgabedatei erfolgreich zum Schreiben geöffnet."));
+                QTextStream ts(&fOut);
+                ts << m_notes;
+                fOut.close();
+                emit success(tr("Ausgabedatei erfolgreich geschrieben."));
+            }
+        } else {
+            emit warning(tr("Konvertierung mit Fehlern beendet."));
+        }
     } else {
         emit error(tr("Kann Eingabedatei nicht zum Lesen öffnen (%1: %2)").arg(fIn.error()).arg(fIn.errorString()));
         result = false;
     }
 
-    emit info(tr("Dateiende erreicht."));
-    if (result)
-        emit success(tr("Konvertierung erfolgreich beendet."));
-    else
-        emit warning(tr("Konvertierung mit Fehlern beendet."));
 }
 
 bool Convert::convertTabLine(QTextStream *fIn, int lineNumber, QString &tuning, bool *result)
