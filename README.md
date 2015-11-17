@@ -27,7 +27,7 @@ As conversion options you can only choose the metrum at the moment. But there wi
 During conversion a lot of information is printed to a log console, should be helpful when fixing bugs/types in the
 bass tab file, (usually there are a lot!)
 
-<i>NOTE: The program is not fully implemented yet, so there will be no output file created at the moment!</i>
+<i>NOTE: Output of is compilable with abcm2ps, but for a good result manual editing of the ABC-file is usually required.</i>
 
 <b>Program logic</b>
 
