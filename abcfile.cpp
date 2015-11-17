@@ -63,6 +63,10 @@ bool AbcFile::create(const QString &notes,
                      const QString &key)
 {
     m_content.clear();
+    // add some formating stuff
+    m_content.append("%%measurenb 5");
+    m_content.append("%%titlefont Times 16");
+    m_content.append("%%textfont Helvetica 10");
     // create header
     m_content.append("X:1");
     m_content.append(QString("L:1/%1").arg(ticks));
