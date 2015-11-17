@@ -20,31 +20,37 @@
 **
 ** Date         Author  Description
 **---------------------------------------------------------------------------
-** 2015-11-08   ttha    Initial version
+** 2015-11-17   ttha    Initial version
 **
 *****************************************************************************/
 
-#include "tab2abc.h"
-#include "apptranslator.h"
-#include <QApplication>
+#ifndef APPTRANSLATOR_H
+#define APPTRANSLATOR_H
 
-int main(int argc, char *argv[])
+#include <QObject>
+#include <QLocale>
+#include <QTranslator>
+
+class AppTranslator : public QObject
 {
-    QApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit AppTranslator(const QString &translationFileBaseName=QString(), QObject *parent = 0);
 
-    // set app properties
-    a.setApplicationName("tab2abc");
-    a.setApplicationVersion("1.0.0");
-    a.setOrganizationName("T2FT");
-    a.setOrganizationDomain("t2ft.de");
+    void parseCommandLine(const QStringList &args,
+                          const QString &parameterName = "lang",
+                          const QString &parameterSeparator = "=",
+                          Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
 
-    // translate application
-    AppTranslator   appTranslator;
-    appTranslator.parseCommandLine(qApp->arguments());
-    appTranslator.translate();
+    void translate(const QString &defaultTranslationFilePath = QString(),
+                   QLocale::Language appLanguage = QLocale::German,
+                   QLocale::Language fallBackLanguage = QLocale::English);
 
-    Tab2Abc w;
-    w.show();
+protected:
+    QString             m_translationFileBaseName;
+    QLocale::Language   m_uiLanguage;
+    QTranslator         m_appTranslator;
+    QTranslator         m_qtTranslator;
+};
 
-    return a.exec();
-}
+#endif // APPTRANSLATOR_H
