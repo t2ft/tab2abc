@@ -148,6 +148,16 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>run</tabstop>
+  <tabstop>loadInFileName</tabstop>
+  <tabstop>loadOutFileName</tabstop>
+  <tabstop>m2_4</tabstop>
+  <tabstop>m3_4</tabstop>
+  <tabstop>m4_4</tabstop>
+  <tabstop>m6_8</tabstop>
+  <tabstop>log</tabstop>
+ </tabstops>
  <resources>
   <include location="tab2abc.qrc"/>
  </resources>
