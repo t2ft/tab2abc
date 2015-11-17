@@ -11,7 +11,7 @@ and not satisfying process for me.
 
 I go much easier with regular music notation and notes. 
 
-My favourite music notation program is "abs2ps" wich makes beautiful postscripts from a plain
+My favourite music notation program is "abcm2ps" (http://moinejf.free.fr/) which makes beautiful postscripts from a plain
 ASCII music notation. Absolutely awsome!
 
 Thats why I started to write this little Tool. Since I am working on Linux and Windows machines 
