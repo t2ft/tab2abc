@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>328</width>
-    <height>268</height>
+    <width>486</width>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,177 @@
    <iconset resource="tab2abc.qrc">
     <normaloff>:/res/tab2abc.png</normaloff>:/res/tab2abc.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Kopf:</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Titel:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="AutoUpdateLineEdit" name="title">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Untertitel:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="AutoUpdateLineEdit" name="subTitle">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Komponist:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="AutoUpdateLineEdit" name="composer">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Parameter:</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <property name="horizontalSpacing">
+       <number>2</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Tempo:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="AutoUpdateLineEdit" name="tempo">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Metrum:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QFrame" name="frame">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="topMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="m2_4">
+           <property name="text">
+            <string>&amp;2/4</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="m3_4">
+           <property name="text">
+            <string>&amp;3/4</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="m4_4">
+           <property name="text">
+            <string>&amp;4/4</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="m6_8">
+           <property name="text">
+            <string>&amp;6/8</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Tonart:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="AutoUpdateLineEdit" name="key">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="log">
+     <property name="lineWrapMode">
+      <enum>QPlainTextEdit::NoWrap</enum>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -70,70 +239,25 @@
      </item>
     </layout>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>Metrum:</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QRadioButton" name="m2_4">
-          <property name="text">
-           <string>&amp;2/4</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="m3_4">
-          <property name="text">
-           <string>&amp;3/4</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="m4_4">
-          <property name="text">
-           <string>&amp;4/4</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="m6_8">
-          <property name="text">
-           <string>&amp;6/8</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="run">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Start</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QPlainTextEdit" name="log">
-     <property name="lineWrapMode">
-      <enum>QPlainTextEdit::NoWrap</enum>
+   <item row="2" column="0" colspan="2">
+    <widget class="QPushButton" name="run">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="textInteractionFlags">
-      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+     <property name="default">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -146,6 +270,11 @@
    <extends>QFrame</extends>
    <header>elidedlabel.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AutoUpdateLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>autoupdatelineedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

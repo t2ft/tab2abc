@@ -20,14 +20,16 @@ SOURCES += main.cpp\
     elidedlabel.cpp \
     bassstringline.cpp \
     abcfile.cpp \
-    apptranslator.cpp
+    apptranslator.cpp \
+    autoupdatelineedit.cpp
 
 HEADERS  += tab2abc.h \
     convert.h \
     elidedlabel.h \
     bassstringline.h \
     abcfile.h \
-    apptranslator.h
+    apptranslator.h \
+    autoupdatelineedit.h
 
 FORMS    += tab2abc.ui
 

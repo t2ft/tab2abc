@@ -67,6 +67,11 @@ private slots:
     void on_m3_4_toggled(bool checked);
     void on_m4_4_toggled(bool checked);
     void on_m6_8_toggled(bool checked);
+    void on_title_updateText(const QString &text);
+    void on_subTitle_updateText(const QString &text);
+    void on_composer_updateText(const QString &text);
+    void on_tempo_updateText(const QString &text);
+    void on_key_updateText(const QString &text);
 
 private:
     typedef enum {
@@ -82,6 +87,11 @@ private:
     Convert::Metrum     m_metrum;
     QString             m_inFileName;
     QString             m_outFileName;
+    QString             m_title;
+    QString             m_subTitle;
+    QString             m_composer;
+    QString             m_tempo;
+    QString             m_key;
 
     void setMetrum(Convert::Metrum metrum);
     void setFileName(const QString &fname, ElidedLabel *ctrl);

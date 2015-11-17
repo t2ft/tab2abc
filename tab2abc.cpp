@@ -39,6 +39,12 @@
 #define cfgInFileName       "InFileName"
 #define cfgOutFileName      "OutFileName"
 #define cfgMetrum           "Metrum"
+#define cfgKey              "Key"
+#define cfgTempo            "Tempo"
+#define cfgTitle            "Title"
+#define cfgSubTitle         "SubTitle"
+#define cfgComposer         "Composer"
+#define cfgEditTimeout      "EditTimeout"
 #define cfgWindowGeometry   "window/Geometry"
 
 Tab2Abc::Tab2Abc(QWidget *parent) :
@@ -49,9 +55,15 @@ Tab2Abc::Tab2Abc(QWidget *parent) :
 
     // reload settings
     QSettings settings;
+    int editTimeout = settings.value(cfgEditTimeout, 1000).toInt();
     m_metrum = static_cast<Convert::Metrum>(settings.value(cfgMetrum, Convert::M4_4).toInt());
     m_inFileName = QDir::fromNativeSeparators(settings.value(cfgInFileName).toString());
     m_outFileName = QDir::fromNativeSeparators(settings.value(cfgOutFileName).toString());
+    m_title = settings.value(cfgTitle, "Bass Groove").toString();
+    m_subTitle = settings.value(cfgSubTitle, "Nothing More to Say").toString();
+    m_composer = settings.value(cfgComposer, "Anonymous").toString();
+    m_tempo =settings.value(cfgTempo, "\"Andante\" 1/4=66").toString();
+    m_key = settings.value(cfgKey, "C bass").toString();
 
     restoreGeometry(settings.value(cfgWindowGeometry).toByteArray());
 
@@ -61,6 +73,16 @@ Tab2Abc::Tab2Abc(QWidget *parent) :
     ui->m3_4->setChecked(m_metrum == Convert::M3_4);
     ui->m4_4->setChecked(m_metrum == Convert::M4_4);
     ui->m6_8->setChecked(m_metrum == Convert::M6_8);
+    ui->key->setText(m_key);
+    ui->key->setUpdateTimeout(editTimeout);
+    ui->tempo->setText(m_tempo);
+    ui->tempo->setUpdateTimeout(editTimeout);
+    ui->title->setText(m_title);
+    ui->title->setUpdateTimeout(editTimeout);
+    ui->subTitle->setText(m_subTitle);
+    ui->subTitle->setUpdateTimeout(editTimeout);
+    ui->composer->setText(m_composer);
+    ui->composer->setUpdateTimeout(editTimeout);
 }
 
 Tab2Abc::~Tab2Abc()
@@ -261,3 +283,42 @@ void Tab2Abc::on_run_clicked()
     }
 }
 
+void Tab2Abc::on_title_updateText(const QString &text)
+{
+    qDebug() << "\"Title\" changed to" << text;
+    QSettings settings;
+    settings.setValue(cfgTitle, text);
+    m_title = text;
+}
+
+void Tab2Abc::on_subTitle_updateText(const QString &text)
+{
+    qDebug() << "\"Subtitle\" changed to" << text;
+    QSettings settings;
+    settings.setValue(cfgSubTitle, text);
+    m_subTitle = text;
+}
+
+void Tab2Abc::on_composer_updateText(const QString &text)
+{
+    qDebug() << "\"Composer\" changed to" << text;
+    QSettings settings;
+    settings.setValue(cfgComposer, text);
+    m_composer = text;
+}
+
+void Tab2Abc::on_tempo_updateText(const QString &text)
+{
+    qDebug() << "\"Tempo\" changed to" << text;
+    QSettings settings;
+    settings.setValue(cfgTempo, text);
+    m_tempo = text;
+}
+
+void Tab2Abc::on_key_updateText(const QString &text)
+{
+    qDebug() << "\"Key\" changed to" << text;
+    QSettings settings;
+    settings.setValue(cfgKey, text);
+    m_key = text;
+}
