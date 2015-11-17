@@ -90,7 +90,7 @@ bool BassStringLine::convert(const QString &line)
             break;
         case '^':   // end of bended note
             endNote = true;
-            extra = '^';
+            extra = '~';
             break;
         case '/':   // end of note, slide up in pitch
             endNote = true;
