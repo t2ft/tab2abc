@@ -33,26 +33,30 @@
 #include <QDir>
 #include <QScopedPointer>
 
-Convert::Convert(const QString &inFileName, const QString &outFileName, Metrum metrum, QObject *parent)
+Convert::Convert(QObject *parent)
     : QObject(parent)
-    , m_inFileName(inFileName)
-    , m_outFileName(outFileName)
-    , m_metrum(metrum)
     , m_ticks(0)
 {
 
 }
 
 
-void Convert::exec()
+void Convert::exec(const QString &inFileName,
+                   const QString &outFileName,
+                   Metrum metrum,
+                   const QString &title,
+                   const QString &subtitle,
+                   const QString &composer,
+                   const QString &tempo,
+                   const QString &key)
 {
     bool result = true;
     emit info(tr("Beginne Konvertierung von \"%1\" nach \"%2\"")
-                    .arg(QDir::toNativeSeparators(m_inFileName))
-                    .arg(QDir::toNativeSeparators(m_outFileName))
+                    .arg(QDir::toNativeSeparators(inFileName))
+                    .arg(QDir::toNativeSeparators(outFileName))
               );
 
-    QFile fIn(m_inFileName);
+    QFile fIn(inFileName);
     if (fIn.open(QFile::ReadOnly | QFile::Text)) {
         emit info(tr("Eingabedatei erfolgreich zum Lesen geöffnet."));
         QTextStream ts(&fIn);
@@ -66,8 +70,8 @@ void Convert::exec()
             emit success(tr("Konvertierung erfolgreich beendet."));
             // write result to output file
             AbcFile abc(this);
-            if (abc.create(m_notes, metrumString(m_metrum), m_ticks)) {
-                result = abc.save(m_outFileName);
+            if (abc.create(m_notes, metrumString(metrum), m_ticks)) {
+                result = abc.save(outFileName);
             } else {
                 result = false;
             }

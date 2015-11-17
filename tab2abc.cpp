@@ -271,14 +271,16 @@ void Tab2Abc::on_run_clicked()
             on_loadOutFileName_clicked();
         }
         if (!m_outFileName.isEmpty()) {
-            QScopedPointer<Convert> cnv(new Convert(m_inFileName, m_outFileName, m_metrum, this));
+            QScopedPointer<Convert> cnv(new Convert(this));
             connect(cnv.data(), SIGNAL(debug(QString)), SLOT(debug(QString)));
             connect(cnv.data(), SIGNAL(info(QString)), SLOT(info(QString)));
             connect(cnv.data(), SIGNAL(extrainfo(QString)), SLOT(extrainfo(QString)));
             connect(cnv.data(), SIGNAL(warning(QString)), SLOT(warning(QString)));
             connect(cnv.data(), SIGNAL(error(QString)), SLOT(error(QString)));
             connect(cnv.data(), SIGNAL(success(QString)), SLOT(success(QString)));
-            cnv->exec();
+            cnv->exec(m_inFileName,
+                      m_outFileName,
+                      m_metrum);
         }
     }
 }

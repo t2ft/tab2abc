@@ -43,9 +43,17 @@ public:
         M6_8
     } Metrum;
 
-    explicit Convert(const QString &inFileName, const QString &outFileName, Metrum metrum = M4_4, QObject *parent = 0);
+    explicit Convert(QObject *parent = 0);
 
-    void exec(void);
+    void exec(const QString &inFileName,
+              const QString &outFileName,
+              Metrum metrum = M4_4,
+              const QString &title = QString(),
+              const QString &subtitle = QString(),
+              const QString &composer = QString(),
+              const QString &tempo = QString(),
+              const QString &key = QString());
+
     QString metrumString(Metrum metrum);
 
 signals:
@@ -57,9 +65,6 @@ signals:
     void success(const QString &text);
 
 private:
-    QString     m_inFileName;
-    QString     m_outFileName;
-    Metrum      m_metrum;
     QString     m_notes;
     int         m_ticks;
 
